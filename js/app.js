@@ -8,6 +8,7 @@ const openCard = [false, false, false, false, false, false, false, false, false,
   false, false, false, false, false, false];
 
 const deck = document.querySelector('ul.deck');
+const stars = document.querySelector('ul.stars');
 const moveText = document.querySelector('span.moves');
 let moveNum = 0;
 let firstCard = null; // an object storing the element and its index in the deck
@@ -60,8 +61,24 @@ initialDeck();
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-function changeMoveText() {
+ function changeStar() {
+   console.log(stars);
+   if (moveNum === 1) {
+     const lastStar = stars.lastElementChild.firstElementChild;
+     lastStar.classList.remove('fa-star');
+     lastStar.classList.add('fa-star-o');
+   }
+   if (moveNum === 2) {
+     const midStar = stars.childNodes[3].firstElementChild;
+     midStar.classList.remove('fa-star');
+     midStar.classList.add('fa-star-o');
+   }
+ }
+
+function changeMove() {
+  moveNum++;
   moveText.innerHTML = moveNum;
+  changeStar();
 }
 
 function findCardIndex (card) {
@@ -101,8 +118,7 @@ function toggleCard(event) {
   if (openCard[cardIndex]) {
     return;
   }
-  moveNum++;
-  changeMoveText();
+  changeMove();
   displayCard(card, cardIndex);
   if (firstCard === null) { // the first in a guess round
     firstCard = {card, cardIndex};
