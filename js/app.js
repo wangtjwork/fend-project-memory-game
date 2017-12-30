@@ -4,7 +4,12 @@
 const cardArray = ['fa-anchor','fa-anchor','fa-bicycle','fa-bicycle','fa-bolt','fa-bolt',
   'fa-bomb','fa-bomb','fa-cube','fa-cube','fa-diamond','fa-diamond','fa-leaf','fa-leaf',
   'fa-paper-plane-o', 'fa-paper-plane-o'];
-shuffle(cardArray);
+const openCard = [false, false, false, false, false, false, false, false, false, false,
+  false, false, false, false, false, false];
+
+const deck = document.querySelector('ul.deck');
+const moveText = document.querySelector('span.moves');
+let moveNum = 0, firstCard = null;
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -12,13 +17,19 @@ shuffle(cardArray);
  *   - add each card's HTML to the page
  */
 
- const deck = document.querySelector('ul.deck');
- for (let i = 0; i < 16; i++) {
-   let newCard = document.createElement('li');
-   newCard.innerHTML = `<i class="fa ${cardArray[i]}"></i>`;
-   newCard.classList.add('card', 'show');
-   deck.appendChild(newCard);
- }
+function initialDeck() {
+  shuffle(cardArray);
+  openCard.forEach(function(ele, index, array) {
+    array[index] = false;
+  });
+  for (let i = 0; i < 16; i++) {
+    let newCard = document.createElement('li');
+    newCard.innerHTML = `<i class="fa ${cardArray[i]}"></i>`;
+    newCard.classList.add('card');
+    deck.appendChild(newCard);
+  }
+}
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -35,6 +46,7 @@ function shuffle(array) {
     return array;
 }
 
+initialDeck();
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -46,3 +58,31 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+function changeMoveText() {
+  moveText.innerHTML = moveNum;
+}
+
+function displayCard(element) {
+  element.classList.add('open', 'show');
+}
+
+function hideCard(firstCard, secondCard) {
+  firstCard.classList.remove('open', 'show');
+  secondCard.classList.remove('open', 'show');
+}
+
+function toggleCard(event) {
+  console.log(event.target);
+  moveNum++;
+  changeMoveText();
+  const card = event.target;
+  displayCard(card);
+  if (firstCard === null) { // the first in a guess round
+    firstCard = card;
+  } else { // the second in a guess round
+    hideCard(firstCard, card);
+  }
+}
+
+deck.addEventListener('click', toggleCard);
