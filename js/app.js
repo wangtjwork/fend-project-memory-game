@@ -9,7 +9,8 @@ const openCard = [false, false, false, false, false, false, false, false, false,
 
 const deck = document.querySelector('ul.deck');
 const moveText = document.querySelector('span.moves');
-let moveNum = 0, firstCard = null;
+let moveNum = 0;
+let firstCard = null; // an object storing the element and its index in the deck
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -63,26 +64,51 @@ function changeMoveText() {
   moveText.innerHTML = moveNum;
 }
 
-function displayCard(element) {
-  element.classList.add('open', 'show');
+function findCardIndex (card) {
+  let matchIndex = 0;
+  card.parentElement.childNodes.forEach(function (ele, index){
+    if (ele === card) {
+      matchIndex = index - 1;
+    }
+  });
+  return matchIndex;
 }
 
-function hideCard(firstCard, secondCard) {
-  firstCard.classList.remove('open', 'show');
+function displayCard(card, index) {
+  card.classList.add('open', 'show');
+  openCard[index] = true;
+}
+
+function hideCard(firstCard, secondCard, secondIndex) {
+  console.log('here');
+  firstCard.card.classList.remove('open', 'show');
   secondCard.classList.remove('open', 'show');
+  openCard[firstCard.cardIndex] = false;
+  openCard[secondIndex] = false;
 }
 
 function toggleCard(event) {
-  console.log(event.target);
+  const card = event.target;
+  const cardIndex = findCardIndex(card);
+  console.log(cardIndex);
+  if (openCard[cardIndex]) {
+    return;
+  }
   moveNum++;
   changeMoveText();
-  const card = event.target;
-  displayCard(card);
+  displayCard(card, cardIndex);
   if (firstCard === null) { // the first in a guess round
-    firstCard = card;
+    firstCard = {card, cardIndex};
   } else { // the second in a guess round
-    hideCard(firstCard, card);
+    if (firstCard.card.firstChild.className === card.firstChild.className) { // founc the same card
+      cardsMatch(firstCard, card);
+    } else {
+      setTimeout(function(){
+        hideCard(firstCard, card, cardIndex)
+      }, 1000);
+    }
   }
+  console.log(openCard);
 }
 
 deck.addEventListener('click', toggleCard);
