@@ -79,6 +79,13 @@ function displayCard(card, index) {
   openCard[index] = true;
 }
 
+function cardsMatch(firstCardAndIndex, secondCard) {
+  firstCardAndIndex.card.classList.add('match');
+  firstCardAndIndex.card.classList.remove('open', 'show');
+  secondCard.classList.add('match');
+  secondCard.classList.remove('open', 'show');
+}
+
 function hideCard(firstCard, secondCard, secondIndex) {
   console.log('here');
   firstCard.card.classList.remove('open', 'show');
@@ -102,9 +109,11 @@ function toggleCard(event) {
   } else { // the second in a guess round
     if (firstCard.card.firstChild.className === card.firstChild.className) { // founc the same card
       cardsMatch(firstCard, card);
+      firstCard = null;
     } else {
       setTimeout(function(){
-        hideCard(firstCard, card, cardIndex)
+        hideCard(firstCard, card, cardIndex);
+        firstCard = null;
       }, 1000);
     }
   }
