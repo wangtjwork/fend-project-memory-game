@@ -12,6 +12,7 @@ const stars = document.querySelector('ul.stars');
 const moveText = document.querySelector('span.moves');
 let moveNum = 0;
 let firstCard = null; // an object storing the element and its index in the deck
+let lock = false;
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -112,6 +113,9 @@ function hideCard(firstCard, secondCard, secondIndex) {
 }
 
 function toggleCard(event) {
+  if (lock) {
+    return;
+  }
   const card = event.target;
   const cardIndex = findCardIndex(card);
   console.log(cardIndex);
@@ -127,9 +131,11 @@ function toggleCard(event) {
       cardsMatch(firstCard, card);
       firstCard = null;
     } else {
+      lock = true;
       setTimeout(function(){
         hideCard(firstCard, card, cardIndex);
         firstCard = null;
+        lock = false;
       }, 1000);
     }
   }
