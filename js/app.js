@@ -5,13 +5,20 @@ const cardArray = ['fa-anchor','fa-anchor','fa-bicycle','fa-bicycle','fa-bolt','
   'fa-bomb','fa-bomb','fa-cube','fa-cube','fa-diamond','fa-diamond','fa-leaf','fa-leaf',
   'fa-paper-plane-o', 'fa-paper-plane-o'];
 shuffle(cardArray);
-console.log(cardArray);
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+
+ const deck = document.querySelector('ul.deck');
+ for (let i = 0; i < 16; i++) {
+   let newCard = document.createElement('li');
+   newCard.innerHTML = `<i class="fa ${cardArray[i]}"></i>`;
+   newCard.classList.add('card', 'show');
+   deck.appendChild(newCard);
+ }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
