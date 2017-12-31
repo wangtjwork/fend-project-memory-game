@@ -92,6 +92,7 @@ function stopTimer() {
 }
 
 function resetTimer() {
+  showTime.textContent = '00:00';
   time = 0;
   if (timer === null) {
     timer = setInterval(function(){
