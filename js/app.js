@@ -12,6 +12,7 @@ const stars = document.querySelector('ul.stars');
 const moveText = document.querySelector('span.moves');
 let moveNum = 0;
 let firstCard = null; // an object storing the element and its index in the deck
+let matchedCards = 0;
 let lock = false;
 /*
  * Display the cards on the page
@@ -66,6 +67,33 @@ initialScorePanel();
 initialDeck();
 
 /*
+  * Add timer to game
+ */
+let time = 0;
+const showTime = document.querySelector('span.timer');
+
+function padTime(num) {
+  let numStr = num + '';
+  if (numStr.length < 2) {
+    numStr = '0' + numStr;
+  }
+  return numStr;
+}
+
+function formatTime(seconds) {
+  let mins = parseInt(seconds / 60), secs = seconds % 60;
+  return `${padTime(mins)}:${padTime(secs)}`
+}
+
+const timer = setInterval(function(){
+  time++;
+  if (time >= 3599) {
+    time = 0;
+  }
+  showTime.textContent = formatTime(time);
+}, 1000);
+
+/*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
  *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
@@ -115,6 +143,11 @@ function cardsMatch(firstCardAndIndex, secondCard) {
   firstCardAndIndex.card.classList.remove('open', 'show');
   secondCard.classList.add('match');
   secondCard.classList.remove('open', 'show');
+  matchedCards += 2;
+  if (matchedCards == 4) { // player won! stop timer and go to results.
+    clearInterval(timer);
+    showResultPage();
+  }
 }
 
 function hideCard(firstCard, secondCard, secondIndex) {
@@ -169,38 +202,27 @@ function resetDeck() {
 document.querySelector('.fa-repeat').addEventListener('click', resetDeck);
 
 /*
-  * Add timer to game
- */
-let time = 0;
-const showTime = document.querySelector('span.timer');
-
-function padTime(num) {
-  let numStr = num + '';
-  if (numStr.length < 2) {
-    numStr = '0' + numStr;
-  }
-  return numStr;
-}
-
-function formatTime(seconds) {
-  let mins = parseInt(seconds / 60), secs = seconds % 60;
-  return `${padTime(mins)}:${padTime(secs)}`
-}
-
-const timer = setInterval(function(){
-  time++;
-  if (time >= 3599) {
-    time = 0;
-  }
-  showTime.textContent = formatTime(time);
-}, 1000);
-
-/*
  * Reach victory
  */
 
 const resultPage = document.querySelector('div.result');
+resultPage.style.display = 'none';
 
 function showResultPage() {
+  document.querySelector('.container').style.display = 'none';
+  resultPage.style.display = 'flex';
+  showResults();
   return;
+}
+
+function showResults() {
+  document.querySelector('.result-moves').textContent = moveNum;
+  let starNum = 3;
+  if (moveNum >= 20) {
+    starNum = 1;
+  } else if (moveNum >= 10) {
+    starNum = 2;
+  }
+  document.querySelector('.result-stars').textContent = starNum;
+  document.querySelector('.result-time').textContent = formatTime(time);
 }
