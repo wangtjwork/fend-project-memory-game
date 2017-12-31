@@ -174,7 +174,6 @@ document.querySelector('.fa-repeat').addEventListener('click', resetDeck);
 let time = 0;
 const showTime = document.querySelector('span.timer');
 
-
 function padTime(num) {
   let numStr = num + '';
   if (numStr.length < 2) {
@@ -190,8 +189,18 @@ function formatTime(seconds) {
 
 const timer = setInterval(function(){
   time++;
-  if (time >= 10) {
+  if (time >= 3599) {
     time = 0;
   }
   showTime.textContent = formatTime(time);
 }, 1000);
+
+/*
+ * Reach victory
+ */
+
+const resultPage = document.querySelector('div.result');
+
+function showResultPage() {
+  return;
+}

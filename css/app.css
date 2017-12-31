@@ -111,3 +111,37 @@ span.timer {
     float: right;
     cursor: pointer;
 }
+
+/*
+ * Styles for Result subpage
+ */
+
+.result {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding-top: 12%;
+}
+
+.hide {
+  display: none;
+}
+
+header {
+  text-align: center;
+}
+
+.large-check {
+  color: lightgreen;
+  font-size: 150px;
+}
+
+.play-again {
+  width: 10em;
+  height: 2.5em;
+  background-color: lightgreen;
+  color: white;
+  font-size: 1em;
+  margin-top: 10px;
+}
