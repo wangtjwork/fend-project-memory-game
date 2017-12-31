@@ -125,12 +125,12 @@ let timer = setInterval(function(){
  */
 
  function changeStar() {
-   if (moveNum === 10) {
+   if (moveNum === 25) {
      const lastStar = stars.lastElementChild.firstElementChild;
      lastStar.classList.remove('fa-star');
      lastStar.classList.add('fa-star-o');
    }
-   if (moveNum === 20) {
+   if (moveNum === 40) {
      const midStar = stars.childNodes[3].firstElementChild;
      midStar.classList.remove('fa-star');
      midStar.classList.add('fa-star-o');
@@ -239,9 +239,9 @@ function showResultPage() {
 function showResults() {
   document.querySelector('.result-moves').textContent = moveNum;
   let starNum = 3;
-  if (moveNum >= 20) {
+  if (moveNum >= 40) {
     starNum = 1;
-  } else if (moveNum >= 10) {
+  } else if (moveNum >= 25) {
     starNum = 2;
   }
   document.querySelector('.result-stars').textContent = starNum;
