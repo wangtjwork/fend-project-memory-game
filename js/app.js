@@ -13,7 +13,6 @@ const moveText = document.querySelector('span.moves');
 let moveNum = 0;
 let firstCard = null; // an object storing the element and its index in the deck
 let lock = false;
-let
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -172,3 +171,27 @@ document.querySelector('.fa-repeat').addEventListener('click', resetDeck);
 /*
   * Add timer to game
  */
+let time = 0;
+const showTime = document.querySelector('span.timer');
+
+
+function padTime(num) {
+  let numStr = num + '';
+  if (numStr.length < 2) {
+    numStr = '0' + numStr;
+  }
+  return numStr;
+}
+
+function formatTime(seconds) {
+  let mins = parseInt(seconds / 60), secs = seconds % 60;
+  return `${padTime(mins)}:${padTime(secs)}`
+}
+
+const timer = setInterval(function(){
+  time++;
+  if (time >= 10) {
+    time = 0;
+  }
+  showTime.textContent = formatTime(time);
+}, 1000);
