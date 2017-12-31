@@ -13,6 +13,7 @@ const moveText = document.querySelector('span.moves');
 let moveNum = 0;
 let firstCard = null; // an object storing the element and its index in the deck
 let lock = false;
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -20,7 +21,20 @@ let lock = false;
  *   - add each card's HTML to the page
  */
 
+function initialScorePanel() {
+  moveText.innerHTML = 0;
+  stars.childNodes.forEach(function(ele) {
+    if (ele.nodeType === 1) {
+      ele.innerHTML = '<i class="fa fa-star"></i>';
+    }
+  });
+}
+
 function initialDeck() {
+  // clear deck first
+  while (deck.firstChild) {
+    deck.removeChild(deck.firstChild);
+  }
   shuffle(cardArray);
   openCard.forEach(function(ele, index, array) {
     array[index] = false;
@@ -49,6 +63,7 @@ function shuffle(array) {
     return array;
 }
 
+initialScorePanel();
 initialDeck();
 
 /*
@@ -63,13 +78,12 @@ initialDeck();
  */
 
  function changeStar() {
-   console.log(stars);
-   if (moveNum === 1) {
+   if (moveNum === 10) {
      const lastStar = stars.lastElementChild.firstElementChild;
      lastStar.classList.remove('fa-star');
      lastStar.classList.add('fa-star-o');
    }
-   if (moveNum === 2) {
+   if (moveNum === 20) {
      const midStar = stars.childNodes[3].firstElementChild;
      midStar.classList.remove('fa-star');
      midStar.classList.add('fa-star-o');
@@ -105,7 +119,6 @@ function cardsMatch(firstCardAndIndex, secondCard) {
 }
 
 function hideCard(firstCard, secondCard, secondIndex) {
-  console.log('here');
   firstCard.card.classList.remove('open', 'show');
   secondCard.classList.remove('open', 'show');
   openCard[firstCard.cardIndex] = false;
@@ -113,13 +126,12 @@ function hideCard(firstCard, secondCard, secondIndex) {
 }
 
 function toggleCard(event) {
-  if (lock) {
+  if (lock) { // user clicked again in the 1 second that's showing unmatching pairs
     return;
   }
   const card = event.target;
   const cardIndex = findCardIndex(card);
-  console.log(cardIndex);
-  if (openCard[cardIndex]) {
+  if (openCard[cardIndex]) { // user clicked on an already opened card
     return;
   }
   changeMove();
@@ -130,16 +142,29 @@ function toggleCard(event) {
     if (firstCard.card.firstChild.className === card.firstChild.className) { // founc the same card
       cardsMatch(firstCard, card);
       firstCard = null;
-    } else {
-      lock = true;
+    } else { // not the same type of card
+      lock = true; // add a lock
       setTimeout(function(){
         hideCard(firstCard, card, cardIndex);
         firstCard = null;
-        lock = false;
+        lock = false; //remove the lock
       }, 1000);
     }
   }
-  console.log(openCard);
 }
 
 deck.addEventListener('click', toggleCard);
+
+/*
+  reset the whole deck
+*/
+
+function resetDeck() {
+  moveNum = 0;
+  lock = false;
+  firstCard = null;
+  initialDeck();
+  initialScorePanel();
+}
+
+document.querySelector('.fa-repeat').addEventListener('click', resetDeck);
