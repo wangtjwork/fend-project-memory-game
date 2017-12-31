@@ -35,6 +35,7 @@ function initialDeck() {
   while (deck.firstChild) {
     deck.removeChild(deck.firstChild);
   }
+  matchedCards = 0;
   shuffle(cardArray);
   openCard.forEach(function(ele, index, array) {
     array[index] = false;
@@ -85,7 +86,25 @@ function formatTime(seconds) {
   return `${padTime(mins)}:${padTime(secs)}`
 }
 
-const timer = setInterval(function(){
+function stopTimer() {
+  clearInterval(timer);
+  timer = null;
+}
+
+function resetTimer() {
+  time = 0;
+  if (timer === null) {
+    timer = setInterval(function(){
+      time++;
+      if (time >= 3599) {
+        time = 0;
+      }
+      showTime.textContent = formatTime(time);
+    }, 1000);
+  }
+}
+
+let timer = setInterval(function(){
   time++;
   if (time >= 3599) {
     time = 0;
@@ -144,8 +163,8 @@ function cardsMatch(firstCardAndIndex, secondCard) {
   secondCard.classList.add('match');
   secondCard.classList.remove('open', 'show');
   matchedCards += 2;
-  if (matchedCards == 4) { // player won! stop timer and go to results.
-    clearInterval(timer);
+  if (matchedCards === 16) { // player won! stop timer and go to results.
+    stopTimer();
     showResultPage();
   }
 }
@@ -197,6 +216,7 @@ function resetDeck() {
   firstCard = null;
   initialDeck();
   initialScorePanel();
+  resetTimer();
 }
 
 document.querySelector('.fa-repeat').addEventListener('click', resetDeck);
@@ -226,3 +246,9 @@ function showResults() {
   document.querySelector('.result-stars').textContent = starNum;
   document.querySelector('.result-time').textContent = formatTime(time);
 }
+
+document.querySelector('.play-again').addEventListener('click', function(){
+  resetDeck();
+  resultPage.style.display = 'none';
+  document.querySelector('.container').style.display = 'flex';
+})
