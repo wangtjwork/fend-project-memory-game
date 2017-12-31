@@ -71,6 +71,7 @@ initialDeck();
   * Add timer to game
  */
 let time = 0;
+let timer = null;
 const showTime = document.querySelector('span.timer');
 
 function padTime(num) {
@@ -94,24 +95,19 @@ function stopTimer() {
 function resetTimer() {
   showTime.textContent = '00:00';
   time = 0;
-  if (timer === null) {
-    timer = setInterval(function(){
-      time++;
-      if (time >= 3599) {
-        time = 0;
-      }
-      showTime.textContent = formatTime(time);
-    }, 1000);
-  }
+  clearInterval(timer);
+  timer = null;
 }
 
-let timer = setInterval(function(){
-  time++;
-  if (time >= 3599) {
-    time = 0;
-  }
-  showTime.textContent = formatTime(time);
-}, 1000);
+function startTimer() {
+  timer = setInterval(function(){
+    time++;
+    if (time >= 3599) {
+      time = 0;
+    }
+    showTime.textContent = formatTime(time);
+  }, 1000);
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -180,6 +176,9 @@ function hideCard(firstCard, secondCard, secondIndex) {
 function toggleCard(event) {
   if (lock) { // user clicked again in the 1 second that's showing unmatching pairs
     return;
+  }
+  if (timer == null) {
+    startTimer();
   }
   const card = event.target;
   const cardIndex = findCardIndex(card);
