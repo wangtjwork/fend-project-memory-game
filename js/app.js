@@ -13,7 +13,7 @@ const moveText = document.querySelector('span.moves');
 let moveNum = 0;
 let firstCard = null; // an object storing the element and its index in the deck
 let lock = false;
-
+let
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -156,8 +156,8 @@ function toggleCard(event) {
 deck.addEventListener('click', toggleCard);
 
 /*
-  reset the whole deck
-*/
+  * Reset the whole deck
+ */
 
 function resetDeck() {
   moveNum = 0;
@@ -168,3 +168,7 @@ function resetDeck() {
 }
 
 document.querySelector('.fa-repeat').addEventListener('click', resetDeck);
+
+/*
+  * Add timer to game
+ */
