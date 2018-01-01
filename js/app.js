@@ -143,7 +143,7 @@ function findCardIndex (card) {
   let matchIndex = 0;
   card.parentElement.childNodes.forEach(function (ele, index){
     if (ele === card) {
-      matchIndex = index - 1;
+      matchIndex = index;
     }
   });
   return matchIndex;
