@@ -19,7 +19,7 @@ The game board has two main components:
   * Game Board: 16 cards facing down. Click on any to see the icon.
 
 ### Install
-Download the zip or clone it to local machine and just double click on index.html.
+Download the zip or clone it to local machine and just double click on index.html. Currently hosted on Github Pages, see [link](https://wangtjwork.github.io/fend-project-memory-game/).
 
 ### Browser Compatibility
 Not intended for Internet Explorer. Please use Mozilla Firefox or Google Chrome to optimize game experience.
